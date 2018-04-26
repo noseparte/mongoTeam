@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:tx="http://www.springframework.org/schema/tx" xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.1.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
+        http://www.springframework.org/schema/data/mongo 
+        http://www.springframework.org/schema/data/mongo/spring-mongo-1.8.xsd">
+
+    <!-- 自动扫包 -->
+    <context:component-scan base-package="com.xmbl.*"> 
+        <context:exclude-filter type="annotation"
+            expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
+
+    <mongo:mongo-client host="192.168.0.77" port="27017" >
+    <!-- <mongo:mongo-client host="172.24.2.58" port="27017" credentials="xunxin:xunxin#123@xunxin"> -->
+    <!-- <mongo:mongo-client host="39.104.88.178" port="27017" credentials="xunxin:xunxin#123@xunxin">
+        <mongo:client-options connections-per-host="10"
+            threads-allowed-to-block-for-connection-multiplier="5"
+            connect-timeout="10000" 
+            socket-keep-alive="false" ></mongo:client-options>
+    </mongo:mongo-client> -->
+	</mongo:mongo-client>
+
+    <mongo:db-factory dbname="report_server" mongo-ref="mongo" />
+
+    <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
+    </bean>
+
+    <import resource="mybatis-config.xml" />
+
+
+</beans>
